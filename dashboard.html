@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | R. Gupta Yoga</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="alternate icon" href="favicon.ico" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .dashboard-header {
+        margin-bottom: 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .dashboard-header-content {
+        flex: 1;
+      }
+
+      .dashboard-header h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        margin: 0 0 0.5rem;
+        color: #252120;
+      }
+
+      .dashboard-header p {
+        color: rgba(37, 33, 32, 0.8);
+        margin: 0;
+      }
+
+      .logout-btn {
+        padding: 0.7rem 1.5rem;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+        color: #a46946;
+        border: 1px solid #a46946;
+        cursor: pointer;
+      }
+
+      .logout-btn:hover {
+        background: #a46946;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(164, 105, 70, 0.3);
+      }
+
+      .logout-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .dashboard-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 12px 40px rgba(92, 68, 44, 0.12);
+        border: 1px solid rgba(37, 33, 32, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 18px 50px rgba(92, 68, 44, 0.18);
+      }
+
+      .dashboard-card h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+        margin: 0 0 1rem;
+        color: #252120;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .dashboard-card-icon {
+        font-size: 1.8rem;
+      }
+
+      .upcoming-classes {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .upcoming-classes li {
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(37, 33, 32, 0.1);
+      }
+
+      .upcoming-classes li:last-child {
+        border-bottom: none;
+      }
+
+      .class-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .class-info h3 {
+        font-size: 1.1rem;
+        margin: 0 0 0.3rem;
+        color: #252120;
+      }
+
+      .class-info p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: rgba(37, 33, 32, 0.7);
+      }
+
+      .class-status {
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .class-status.confirmed {
+        background: rgba(46, 125, 50, 0.1);
+        color: #2e7d32;
+      }
+
+      .class-status.pending {
+        background: rgba(255, 152, 0, 0.1);
+        color: #ff9800;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .stat-box {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(247, 239, 230, 0.6));
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px solid rgba(37, 33, 32, 0.08);
+      }
+
+      .stat-box .number {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #a46946;
+        margin: 0 0 0.5rem;
+      }
+
+      .stat-box .label {
+        font-size: 0.95rem;
+        color: rgba(37, 33, 32, 0.8);
+        margin: 0;
+      }
+
+      .quick-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+      }
+
+      .action-btn {
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .action-btn.primary {
+        background: #a46946;
+        color: white;
+      }
+
+      .action-btn.primary:hover {
+        background: #8f5738;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(164, 105, 70, 0.3);
+      }
+
+      .action-btn.secondary {
+        background: rgba(255, 255, 255, 0.8);
+        color: #a46946;
+        border: 1px solid #a46946;
+      }
+
+      .action-btn.secondary:hover {
+        background: #a46946;
+        color: white;
+      }
+
+      .profile-section {
+        background: linear-gradient(135deg, rgba(233, 219, 200, 0.4), rgba(247, 239, 230, 0.6));
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #a46946, #8f5738);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        font-weight: 600;
+      }
+
+      .profile-info h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        margin: 0 0 0.3rem;
+        color: #252120;
+      }
+
+      .profile-info p {
+        margin: 0;
+        color: rgba(37, 33, 32, 0.7);
+      }
+
+      @media (max-width: 960px) {
+        .dashboard-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .add-button {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #a46946, #8f5738);
+        color: white;
+        border: none;
+        font-size: 2rem;
+        font-weight: 300;
+        cursor: pointer;
+        box-shadow: 0 8px 24px rgba(164, 105, 70, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 100;
+        line-height: 1;
+      }
+
+      .add-button:hover {
+        transform: scale(1.1) rotate(90deg);
+        box-shadow: 0 12px 32px rgba(164, 105, 70, 0.5);
+        background: linear-gradient(135deg, #8f5738, #7a4a2f);
+      }
+
+      .add-button:active {
+        transform: scale(1.05) rotate(90deg);
+      }
+
+      @media (max-width: 640px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .profile-header {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .dashboard-header {
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
+        .logout-btn {
+          align-self: flex-start;
+        }
+
+        .add-button {
+          width: 55px;
+          height: 55px;
+          font-size: 1.8rem;
+          bottom: 1.5rem;
+          right: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="dashboard-container">
+        <div class="dashboard-header">
+          <div class="dashboard-header-content">
+            <h1>Welcome Back!</h1>
+            <p>Here's an overview of your yoga journey</p>
+          </div>
+          <a href="index.html" class="logout-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Logout</span>
+          </a>
+        </div>
+
+        <div class="profile-section">
+          <div class="profile-header">
+            <div class="profile-avatar">RG</div>
+            <div class="profile-info">
+              <h2>R. Gupta</h2>
+              <p>Member since January 2023</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="number">24</div>
+            <p class="label">Classes Attended</p>
+          </div>
+          <div class="stat-box">
+            <div class="number">8</div>
+            <p class="label">Upcoming Classes</p>
+          </div>
+          <div class="stat-box">
+            <div class="number">156</div>
+            <p class="label">Practice Hours</p>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dashboard-card">
+            <h2><span class="dashboard-card-icon">📅</span> Upcoming Classes</h2>
+            <ul class="upcoming-classes">
+              <li>
+                <div class="class-item">
+                  <div class="class-info">
+                    <h3>Morning Grounding</h3>
+                    <p>Tuesday, March 15 · 7:00 AM</p>
+                  </div>
+                  <span class="class-status confirmed">Confirmed</span>
+                </div>
+              </li>
+              <li>
+                <div class="class-item">
+                  <div class="class-info">
+                    <h3>Alignment Essentials</h3>
+                    <p>Wednesday, March 16 · 6:00 PM</p>
+                  </div>
+                  <span class="class-status confirmed">Confirmed</span>
+                </div>
+              </li>
+              <li>
+                <div class="class-item">
+                  <div class="class-info">
+                    <h3>Sunday Reset</h3>
+                    <p>Sunday, March 20 · 5:00 PM</p>
+                  </div>
+                  <span class="class-status pending">Pending</span>
+                </div>
+              </li>
+            </ul>
+            <div class="quick-actions">
+              <a href="schedule.html" class="action-btn primary">View Schedule</a>
+            </div>
+          </div>
+
+          <div class="dashboard-card">
+            <h2><span class="dashboard-card-icon">📚</span> My Progress</h2>
+            <p style="margin-bottom: 1rem; color: rgba(37, 33, 32, 0.8);">
+              Track your yoga journey and see how far you've come.
+            </p>
+            <div style="margin: 1.5rem 0;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.9rem;">This Month</span>
+                <span style="font-weight: 600; color: #a46946;">12 classes</span>
+              </div>
+              <div style="background: rgba(37, 33, 32, 0.1); border-radius: 10px; height: 8px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #a46946, #8f5738); height: 100%; width: 80%; border-radius: 10px;"></div>
+              </div>
+            </div>
+            <div style="margin: 1.5rem 0;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.9rem;">Streak</span>
+                <span style="font-weight: 600; color: #a46946;">5 days</span>
+              </div>
+              <div style="background: rgba(37, 33, 32, 0.1); border-radius: 10px; height: 8px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #a46946, #8f5738); height: 100%; width: 50%; border-radius: 10px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-card">
+            <h2><span class="dashboard-card-icon">💳</span> Membership</h2>
+            <p style="margin-bottom: 1rem; color: rgba(37, 33, 32, 0.8);">
+              Current Plan: Monthly Unlimited
+            </p>
+            <div style="background: rgba(164, 105, 70, 0.1); border-radius: 12px; padding: 1rem; margin: 1rem 0;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.9rem;">Renews on</span>
+                <span style="font-weight: 600;">April 1, 2024</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="font-size: 0.9rem;">Status</span>
+                <span style="font-weight: 600; color: #2e7d32;">Active</span>
+              </div>
+            </div>
+            <div class="quick-actions">
+              <a href="booking.html" class="action-btn secondary">Manage Plan</a>
+            </div>
+          </div>
+          
+
+          <div class="dashboard-card">
+            <h2><span class="dashboard-card-icon">📝</span> Recent Activity</h2>
+            <ul class="upcoming-classes">
+              <li>
+                <div class="class-info">
+                  <h3>Completed: Morning Grounding</h3>
+                  <p>March 12, 2024 · 7:00 AM</p>
+                </div>
+              </li>
+
+          <div class="dashboard-card">
+            <h2><span class="dashboard-card-icon">📝</span> Recent Activity</h2>
+            <ul class="upcoming-classes">
+              <li>
+                <div class="class-info">
+                  <h3>Completed: Morning Grounding</h3>
+                  <p>March 12, 2024 · 7:00 AM</p>
+                </div>
+              </li>
+              <li>
+                <div class="class-info">
+                  <h3>Completed: Alignment Essentials</h3>
+                  <p>March 10, 2024 · 6:00 PM</p>
+                </div>
+              </li>
+              <li>
+                <div class="class-info">
+                  <h3>Booked: Sunday Reset</h3>
+                  <p>March 8, 2024</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Floating Add Button -->
+    <button class="add-button" onclick="window.location.href='booking.html';" aria-label="Add new booking">
+      +
+    </button>
+  </body>
+</html>
+
